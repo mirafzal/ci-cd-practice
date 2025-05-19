@@ -26,7 +26,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: "./my-node-app"
-          target: /opt/ci-cd-practice/my-node-app
+          target: /opt/ci-cd-practice/
 
       - name: Execute remote SSH commands using password
         uses: appleboy/ssh-action@v1
