@@ -1,0 +1,54 @@
+name: Deploy app with docker
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    outputs:
+      image_name: registry.digitalocean.com/my-container-registry123/my-node-app:${{ github.sha }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and push docker
+        working-directory: ./my-node-app
+        run: |
+          docker build -t registry.digitalocean.com/my-container-registry123/my-node-app:${{ github.sha }} .
+          docker login registry.digitalocean.com -u paulbundy07@gmail.com -p ${{ secrets.REGISTRY_TOKEN }}
+          docker push registry.digitalocean.com/my-container-registry123/my-node-app:${{ github.sha }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy files via SSH
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "./my-node-app/docker-compose-prod.yaml"
+          target: "/opt/my-node-app-on-docker/docker-compose.yaml"
+
+      - name: Restart docker compose
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd /opt/my-node-app-on-docker
+            yq -i '.services.web.image = "${{ needs.build.outputs.image_name }}"' docker-compose.yaml
+            docker compose up -d --remove-orphans
