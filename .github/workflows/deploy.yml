@@ -1,7 +1,11 @@
 name: Deploy app to server
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
+
 
 jobs:
   deploy:
