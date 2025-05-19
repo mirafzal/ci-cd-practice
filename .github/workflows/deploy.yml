@@ -10,10 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Change directory to my-node-app
-        run: cd my-node-app
-
       - name: npm install packages
+        working-directory: ./my-node-app
         run: npm ci
 
       - name: Copy files via SSH
@@ -23,7 +21,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "."
+          source: "./my-node-app"
           target: /opt/ci-cd-practice/my-node-app
 
       - name: Execute remote SSH commands using password
