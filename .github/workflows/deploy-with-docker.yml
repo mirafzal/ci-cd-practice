@@ -39,7 +39,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: "./my-node-app/docker-compose-prod.yaml"
-          target: "/opt/my-node-app-on-docker/docker-compose.yaml"
+          target: "/opt/my-node-app-on-docker/"
           strip_components: 2
 
       - name: Restart docker compose
@@ -51,5 +51,6 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd /opt/my-node-app-on-docker
+            mv docker-compose-prod.yaml docker-compose.yaml
             yq -i '.services.web.image = "${{ needs.build.outputs.image_name }}"' docker-compose.yaml
             docker compose up -d --remove-orphans
