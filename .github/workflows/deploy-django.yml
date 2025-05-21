@@ -1,0 +1,46 @@
+name: Deploy django app to server
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - mydjangoapp
+  workflow_dispatch:
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10.2'
+
+      - name: pip install packages
+        working-directory: ./mydjangoapp
+        run: |
+          python3 -m venv env
+          source env/bin/activate
+          pip3 install -r requirements.txt
+
+      - name: Copy files via SSH
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.DJANGO_SSH_HOST }}
+          username: ${{ secrets.DJANGO_SSH_USERNAME }}
+          key: ${{ secrets.DJANGO_SSH_KEY }}
+          port: ${{ secrets.DJANGO_SSH_PORT }}
+          source: "./mydjangoapp"
+          target: "/opt/"
+
+      - name: Execute remote SSH commands using password
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DJANGO_SSH_HOST }}
+          username: ${{ secrets.DJANGO_SSH_USERNAME }}
+          key: ${{ secrets.DJANGO_SSH_KEY }}
+          port: ${{ secrets.DJANGO_SSH_PORT }}
+          script: systemctl restart mydjangoapp-gunicorn
