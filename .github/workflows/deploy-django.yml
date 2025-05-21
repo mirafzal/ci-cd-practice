@@ -16,18 +16,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12.7'
+#      - uses: actions/setup-python@v5
+#        with:
+#          python-version: '3.12.7'
 
-      - name: pip install packages
-        working-directory: ./mydjangoapp
-        run: |
-          python3 -m venv env
-          ./env/bin/pip install -r requirements.txt
-          ./env/bin/pip show gunicorn
-          ./env/bin/pip show django
-          ls -lah ./env/lib
+#      - name: pip install packages
+#        working-directory: ./mydjangoapp
+#        run: |
+#          python3 -m venv env
+#          ./env/bin/pip install -r requirements.txt
 
       - name: Copy files via SSH
         uses: appleboy/scp-action@v1
@@ -46,4 +43,8 @@ jobs:
           username: ${{ secrets.DJANGO_SSH_USERNAME }}
           key: ${{ secrets.DJANGO_SSH_KEY }}
           port: ${{ secrets.DJANGO_SSH_PORT }}
-          script: systemctl restart mydjangoapp-gunicorn
+          script: |
+              python3 -m venv env
+              ./env/bin/pip install -r requirements.txt
+              python3 /opt/mydjangoapp/manage.py migrate
+              systemctl restart mydjangoapp-gunicorn
