@@ -24,10 +24,11 @@ jobs:
         working-directory: ./mydjangoapp
         run: |
           python3 -m venv env
-          source env/bin/activate
-          pip3 install -r requirements.txt
-          pwd
-          ls -lah env/lib
+          python3 -m venv env
+          ./env/bin/pip install -r requirements.txt
+          ./env/bin/pip show gunicorn
+          ./env/bin/pip show django
+          ls -lah ./env/lib
 
       - name: Copy files via SSH
         uses: appleboy/scp-action@v1
