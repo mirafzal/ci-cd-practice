@@ -26,6 +26,8 @@ jobs:
           python3 -m venv env
           source env/bin/activate
           pip3 install -r requirements.txt
+          pwd
+          ls -lah env/lib
 
       - name: Copy files via SSH
         uses: appleboy/scp-action@v1
