@@ -1,0 +1,74 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pyd
+.Python
+
+# Virtual Environment
+env/
+venv/
+ENV/
+env.bak/
+*.env
+
+# Django Migrations
+*/migrations/__pycache__/
+*/migrations/*.pyc
+*/migrations/*.pyo
+*/migrations/*.pyd
+
+# Django SQLite Database
+db.sqlite3
+db.sqlite3-journal
+
+# Logs
+*.log
+
+# Media & Static Files (if generated during runtime)
+media/
+staticfiles/
+static/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Coverage and testing
+htmlcov/
+.coverage
+.tox/
+nosetests.xml
+testdb.sqlite3
+
+# Pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Pytest
+.pytest_cache/
+
+# MyPy
+.mypy_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Build
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# dotenv
+.env
+.env.*
+
+# Docker
+*.pid
