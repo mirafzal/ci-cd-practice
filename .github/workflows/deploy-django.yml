@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/deploy-django.yml'
+      - '.github/workflows/deploy-django.yml'
       - 'mydjangoapp/**'
   workflow_dispatch:
 
