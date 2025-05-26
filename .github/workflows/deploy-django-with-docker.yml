@@ -23,9 +23,9 @@ jobs:
       - name: Build and push docker
         working-directory: ./mydjangoapp
         run: |
-          docker build -t registry.digitalocean.com/my-container-registry123/mydjangoapp:${{ github.sha }} .
+          docker build -t registry.digitalocean.com/my-registry123/mydjangoapp:${{ github.sha }} .
           docker login registry.digitalocean.com -u paulbundy07@gmail.com -p ${{ secrets.REGISTRY_TOKEN }}
-          docker push registry.digitalocean.com/my-container-registry123/mydjangoapp:${{ github.sha }}
+          docker push registry.digitalocean.com/my-registry123/mydjangoapp:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
