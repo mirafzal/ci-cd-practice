@@ -1,12 +1,12 @@
 name: Deploy django app to server
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/deploy-django.yml'
-      - 'mydjangoapp/**'
+#  push:
+#    branches:
+#      - main
+#    paths:
+#      - '.github/workflows/deploy-django.yml'
+#      - 'mydjangoapp/**'
   workflow_dispatch:
 
 
