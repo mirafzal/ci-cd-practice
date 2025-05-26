@@ -8,6 +8,7 @@ services:
       - web
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - static_files:/app/staticfiles
 
   web:
     image: registry.digitalocean.com/my-registry123/mydjangoapp:1.0.0
@@ -15,3 +16,8 @@ services:
     command: gunicorn mydjangoapp.wsgi:application --bind 0.0.0.0:8000
     env_file:
       - .env
+    volumes:
+      - static_files:/app/staticfiles
+
+volumes:
+  static_files:
