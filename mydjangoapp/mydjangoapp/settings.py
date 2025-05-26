@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure--&ith9tid5m4i34%-y*108eqmt_0+uom!%!#%+s+2t!@g^s)6w
 ENV = config('ENV', default='development')
 DEBUG = ENV != 'production'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'app.mirafzal.uz']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1', cast=lambda v: [s.strip() for s in v.split(',')])
 
 
 # Application definition
