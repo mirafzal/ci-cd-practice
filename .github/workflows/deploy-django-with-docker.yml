@@ -41,7 +41,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "./mydjangoapp/deploy/docker-compose.yaml"
+          source: "./mydjangoapp/deploy/*"
           target: "/opt/mydjangoapp/"
           strip_components: 3
 

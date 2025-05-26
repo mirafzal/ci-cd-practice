@@ -6,6 +6,8 @@ services:
       - "80:80"
     depends_on:
       - web
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
 
   web:
     image: registry.digitalocean.com/my-registry123/mydjangoapp:1.0.0
