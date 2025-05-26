@@ -43,7 +43,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           source: "./mydjangoapp/deploy/docker-compose.yaml"
           target: "/opt/mydjangoapp/"
-          strip_components: 2
+          strip_components: 3
 
       - name: Restart docker compose
         uses: appleboy/ssh-action@v1
