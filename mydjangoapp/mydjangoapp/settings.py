@@ -132,3 +132,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # for production
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
+
+CSRF_TRUSTED_ORIGINS = ['*']
