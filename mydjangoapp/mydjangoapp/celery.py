@@ -2,6 +2,7 @@ import os
 
 from celery import Celery
 from celery import shared_task
+import time
 
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mydjangoapp.settings')
@@ -24,4 +25,10 @@ def debug_task(self):
 
 @shared_task
 def add(x, y):
-    return x + y
+    print x + y
+
+@shared_task
+def long_task():
+    print 'long task started'
+    time.sleep(60)
+    print 'long task finished'
