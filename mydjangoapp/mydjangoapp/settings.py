@@ -142,4 +142,5 @@ CSRF_TRUSTED_ORIGINS = config(
 
 CELERY_TIMEZONE = "Asia/Tashkent"
 
-CELERY_RESULT_BACKEND = 'django-db'
+CELERY_BROKER_URL = 'redis://localhost:6379/0'          # Redis URL for broker
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'      # Redis URL for results backend

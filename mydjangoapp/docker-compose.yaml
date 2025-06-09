@@ -16,8 +16,29 @@ services:
       DB_PASSWORD: app_password
       DB_HOST: db
       DB_PORT: 5432
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
     depends_on:
       - db
+
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A mydjangoapp worker --loglevel=info
+    volumes:
+      - .:/app
+    environment:
+      DB_NAME: app_db
+      DB_USER: app_user
+      DB_PASSWORD: app_password
+      DB_HOST: db
+      DB_PORT: 5432
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
 
   db:
     image: postgres:15-alpine
@@ -27,6 +48,11 @@ services:
       POSTGRES_DB: app_db
       POSTGRES_USER: app_user
       POSTGRES_PASSWORD: app_password
+
+  redis:
+    image: redis:alpine        # Redis image
+    ports:
+      - "6379:6379"            # Expose Redis default port
 
 volumes:
   postgres_data:
