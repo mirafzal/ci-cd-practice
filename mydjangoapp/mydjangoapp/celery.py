@@ -25,10 +25,10 @@ def debug_task(self):
 
 @shared_task
 def add(x, y):
-    print x + y
+    print(x + y)
 
 @shared_task
 def long_task():
-    print 'long task started'
+    print('long task started')
     time.sleep(60)
-    print 'long task finished'
+    print('long task finished')
