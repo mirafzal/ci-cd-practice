@@ -128,4 +128,4 @@ jobs:
 #            yq -i '.services.web.image = "${{ needs.build.outputs.image_name }}"' docker-compose.yaml
 #            docker compose stop nginx --timeout 60
 #            docker compose stop web --timeout 60
-            docker compose up -d --remove-orphans
+#            docker compose up -d --remove-orphans
