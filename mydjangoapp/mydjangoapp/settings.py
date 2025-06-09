@@ -138,3 +138,5 @@ CSRF_TRUSTED_ORIGINS = config(
     default='https://app.mirafzal.uz',
     cast=lambda v: [s.strip() for s in v.split(',')]
 )
+
+CELERY_TIMEZONE = "Asia/Tashkent"
