@@ -56,8 +56,9 @@ jobs:
             cd /opt/mydjangoapp/
             docker login registry.digitalocean.com -u paulbundy07@gmail.com -p ${{ secrets.REGISTRY_TOKEN }}
             yq -i '.services.web.image = "${{ needs.build.outputs.image_name }}"' docker-compose.yaml
+            yq -i '.services.celery.image = "${{ needs.build.outputs.image_name }}"' docker-compose.yaml
             docker compose stop nginx --timeout 60
-            docker compose stop web --timeout 60
+            docker compose stop web celery --timeout 60          
             docker compose up -d --remove-orphans
 
 #  deploy2:

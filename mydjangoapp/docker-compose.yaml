@@ -21,7 +21,7 @@ services:
     depends_on:
       - db
 
-  celery-worker:
+  celery:
     build:
       context: .
       dockerfile: Dockerfile
