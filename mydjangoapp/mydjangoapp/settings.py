@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'todo'
+    'todo',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -140,3 +141,5 @@ CSRF_TRUSTED_ORIGINS = config(
 )
 
 CELERY_TIMEZONE = "Asia/Tashkent"
+
+CELERY_RESULT_BACKEND = 'django-db'
