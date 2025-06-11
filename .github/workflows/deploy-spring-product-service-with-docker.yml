@@ -58,5 +58,5 @@ jobs:
             mkdir -p /opt/myspringapp/
             cd /opt/myspringapp/
             docker login registry.digitalocean.com -u paulbundy07@gmail.com -p ${{ secrets.REGISTRY_TOKEN }}
-            yq -i '.services.user-service.image = "${{ needs.build.outputs.image_name }}"' docker-compose.yaml   
+            yq -i '.services.product-service.image = "${{ needs.build.outputs.image_name }}"' docker-compose.yaml   
             docker compose up -d --remove-orphans
