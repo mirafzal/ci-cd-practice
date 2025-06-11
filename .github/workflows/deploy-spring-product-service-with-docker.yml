@@ -36,27 +36,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Copy files via SSH
-        uses: appleboy/scp-action@v1
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "./myspringapp/deploy/*"
-          target: "/opt/myspringapp/"
-          strip_components: 2
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p ${{ secrets.SSH_PORT || '22' }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Restart docker compose
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
+      - name: Copy files via SCP
+        run: |
+          scp -P ${{ secrets.SSH_PORT || '22' }} -r ./myspringapp/deploy/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/opt/myspringapp/
+
+      - name: Restart remote app
+        run: |
+          ssh -p ${{ secrets.SSH_PORT || '22' }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
             mkdir -p /opt/myspringapp/
             cd /opt/myspringapp/
             docker login registry.digitalocean.com -u paulbundy07@gmail.com -p ${{ secrets.REGISTRY_TOKEN }}
             yq -i '.services.product-service.image = "${{ needs.build.outputs.image_name }}"' docker-compose.yaml   
             docker compose up -d --remove-orphans
+          EOF
