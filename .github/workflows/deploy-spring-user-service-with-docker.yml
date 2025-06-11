@@ -43,9 +43,9 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -p ${{ secrets.SSH_PORT || '22' }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Copy files via SCP
-        run: |
-          scp -P ${{ secrets.SSH_PORT || '22' }} -r ./myspringapp/deploy/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/opt/myspringapp/
+#      - name: Copy files via SCP
+#        run: |
+#          scp -P ${{ secrets.SSH_PORT || '22' }} -r ./myspringapp/deploy/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/opt/myspringapp/
 
       - name: Restart remote app
         run: |
