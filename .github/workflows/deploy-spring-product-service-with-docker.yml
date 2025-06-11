@@ -55,8 +55,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            mkdir -p /opt/myspringapp/product-service/
-            cd /opt/myspringapp/product-service/
+            mkdir -p /opt/myspringapp/
+            cd /opt/myspringapp/
             docker login registry.digitalocean.com -u paulbundy07@gmail.com -p ${{ secrets.REGISTRY_TOKEN }}
             yq -i '.services.user-service.image = "${{ needs.build.outputs.image_name }}"' docker-compose.yaml   
             docker compose up -d --remove-orphans
