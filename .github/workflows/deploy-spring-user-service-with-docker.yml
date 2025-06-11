@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/deploy-spring-user-service-with-docker'
+      - '.github/workflows/deploy-spring-user-service-with-docker.yml'
       - 'myspringapp/user-service/**'
   workflow_dispatch:
 
