@@ -15,7 +15,7 @@ services:
   product-service:
     image: registry.digitalocean.com/my-registry123/myspringapp-product-service:1.0.0
     env_file:
-      - user-service.env
+      - product-service.env
     ports:
       - "8082:8082"
     depends_on:
