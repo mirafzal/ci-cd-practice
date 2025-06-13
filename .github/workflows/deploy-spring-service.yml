@@ -26,8 +26,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      image_name:
-        value: ${{ steps.set_output.outputs.image_name }}
+      image_name: ${{ steps.set_output.outputs.image_name }}
 
     steps:
       - uses: actions/checkout@v4
