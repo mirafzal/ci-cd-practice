@@ -69,6 +69,6 @@ jobs:
             set -e
             cd /opt/${{ inputs.service-dir }}/
             echo "${{ secrets.REGISTRY_TOKEN }}" | docker login registry.digitalocean.com -u paulbundy07@gmail.com --password-stdin
-            yq -i '.services.user-service.image = "${{ needs.build.outputs.image_name }}"' docker-compose.yaml   
+            yq -i '.services.${{ inputs.service-name }}.image = "${{ needs.build.outputs.image_name }}"' docker-compose.yaml   
             docker compose up -d --remove-orphans
           EOF
