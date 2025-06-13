@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  user-service:
+    image: registry.digitalocean.com/my-registry123/myspringapp-user-service:1.0.0
+    env_file:
+      - .env
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+    networks:
+      - spring-network
+
+  db:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - spring-network
+
+networks:
+  spring-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
