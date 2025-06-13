@@ -1,0 +1,5 @@
+services:
+  app:
+    image: registry.digitalocean.com/my-registry123/mygoapp:1.0.0
+    ports:
+      - "8080:8080"
