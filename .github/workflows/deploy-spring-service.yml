@@ -27,18 +27,24 @@ jobs:
 
     outputs:
       image_name:
-        value: registry.digitalocean.com/my-registry123/myspringapp-${{ inputs.service-name }}:${{ github.sha }}
+        value: ${{ steps.set_output.outputs.image_name }}
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Build and Push Docker Image
+        id: docker_build
         working-directory: ${{ inputs.service-dir }}
         run: |
           IMAGE_NAME=registry.digitalocean.com/my-registry123/myspringapp-${{ inputs.service-name }}:${{ github.sha }}
           docker build -t $IMAGE_NAME .
-          echo ${{ secrets.REGISTRY_TOKEN }} | docker login registry.digitalocean.com -u paulbundy07@gmail.com --password-stdin
+          echo "${{ secrets.REGISTRY_TOKEN }}" | docker login registry.digitalocean.com -u paulbundy07@gmail.com --password-stdin
           docker push $IMAGE_NAME
+          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
+
+      - name: Set Output Image Name
+        id: set_output
+        run: echo "image_name=${{ env.IMAGE_NAME }}" >> $GITHUB_OUTPUT
 
   deploy:
     runs-on: ubuntu-latest
@@ -52,17 +58,19 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -p ${{ secrets.SSH_PORT || '22' }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -p ${SSH_PORT:-22} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Copy files via SCP
+      - name: Copy Files via SCP
         run: |
-          scp -P ${{ secrets.SSH_PORT || '22' }} -r ./${{ inputs.service-dir }}/deploy/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/opt/${{ inputs.service-dir }}/
+          scp -P ${SSH_PORT:-22} -r ./${{ inputs.service-dir }}/deploy/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/opt/${{ inputs.service-name }}/
 
       - name: Restart Remote App
         run: |
-          ssh -p ${{ secrets.SSH_PORT || '22' }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << EOF
+          ssh -p ${SSH_PORT:-22} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << EOF
+            set -e
             cd /opt/${{ inputs.service-dir }}/
             echo "${{ secrets.REGISTRY_TOKEN }}" | docker login registry.digitalocean.com -u paulbundy07@gmail.com --password-stdin
-            yq -i '.services.${{ inputs.service-name }}.image = "registry.digitalocean.com/my-registry123/myspringapp-${{ inputs.service-name }}:${{ github.sha }}"' docker-compose.yaml
+            IMAGE="registry.digitalocean.com/my-registry123/myspringapp-${{ inputs.service-name }}:${{ github.sha }}"
+            yq -i '.services["${{ inputs.service-name }}"].image = strenv(IMAGE)' docker-compose.yaml
             docker compose up -d --remove-orphans
           EOF
