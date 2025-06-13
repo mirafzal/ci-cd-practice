@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Chat Demo</title>
+    <style>
+        body { font-family: Arial; }
+        #chat { border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: scroll; }
+    </style>
+</head>
+<body>
+<h2>WebSocket Chat</h2>
+<div id="chat"></div>
+<input type="text" id="messageInput" placeholder="Type a message..." />
+<button onclick="sendMessage()">Send</button>
+
+<script>
+    const ws = new WebSocket(`ws://${location.host}`);
+    const chat = document.getElementById('chat');
+
+    ws.onmessage = async (event) => {
+        let messageText;
+
+        if (event.data instanceof Blob) {
+            // Convert Blob to text
+            messageText = await event.data.text();
+        } else {
+            messageText = event.data;
+        }
+
+        const msg = document.createElement('div');
+        msg.textContent = messageText;
+        chat.appendChild(msg);
+    };
+
+
+    function sendMessage() {
+        const input = document.getElementById('messageInput');
+        if (input.value.trim()) {
+            ws.send(input.value);
+            input.value = '';
+        }
+    }
+</script>
+</body>
+</html>
