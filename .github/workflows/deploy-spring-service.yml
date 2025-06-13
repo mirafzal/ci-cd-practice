@@ -61,7 +61,7 @@ jobs:
 
       - name: Copy Files via SCP
         run: |
-          scp -P ${SSH_PORT:-22} -r ./${{ inputs.service-dir }}/deploy/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/opt/${{ inputs.service-name }}/
+          scp -P ${SSH_PORT:-22} -r ./${{ inputs.service-dir }}/deploy/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/opt/${{ inputs.service-dir }}/
 
       - name: Restart Remote App
         run: |
