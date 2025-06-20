@@ -59,7 +59,7 @@ pipeline {
               echo "$REGISTRY_TOKEN" | docker login registry.digitalocean.com -u paulbundy07@gmail.com --password-stdin
               yq -i '.services.app.image = "${REGISTRY}:${IMAGE_TAG}"' docker-compose.yaml
               docker compose up -d --remove-orphans
-            EOF
+EOF
           '''
         }
       }
