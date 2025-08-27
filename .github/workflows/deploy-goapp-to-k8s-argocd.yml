@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: 'https://github.com/mirafzal/argocd-repo-lesson'
+          repository: 'mirafzal/argocd-repo-lesson'
           token: '${{ secrets.ARGOCD_REPO_CHECKOUT_TOKEN }}'
 
       - name: Change deployment image tag
