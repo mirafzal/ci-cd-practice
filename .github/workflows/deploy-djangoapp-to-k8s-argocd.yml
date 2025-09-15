@@ -1,4 +1,4 @@
-name: Deploy goapp app to k8s argocd
+name: Deploy mydjangoapp app to k8s argocd
 
 on:
   push:
