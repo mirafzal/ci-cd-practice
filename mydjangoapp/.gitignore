@@ -69,6 +69,7 @@ dist/
 # dotenv
 .env
 .env.*
+!.env.example
 
 # Docker
 *.pid
