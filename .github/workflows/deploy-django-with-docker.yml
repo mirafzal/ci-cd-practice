@@ -1,12 +1,12 @@
 name: Deploy django app with docker
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/deploy-django-with-docker.yml'
-      - 'mydjangoapp/**'
+#  push:
+#    branches:
+#      - main
+#    paths:
+#      - '.github/workflows/deploy-django-with-docker.yml'
+#      - 'mydjangoapp/**'
   workflow_dispatch:
 
 
