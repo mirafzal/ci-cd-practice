@@ -18,6 +18,9 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 # Load task modules from all registered Django apps.
 app.autodiscover_tasks()
 
+app.conf.task_acks_late = True
+app.conf.worker_prefetch_multiplier = 1
+app.conf.broker_transport_options = {"visibility_timeout": 3600}
 
 @app.task(bind=True, ignore_result=True)
 def debug_task(self):
